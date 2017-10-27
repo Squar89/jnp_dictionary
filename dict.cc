@@ -16,9 +16,6 @@ const bool DEBUG = false;
 
 static const unsigned long GLOBAL_ID = dict_global();
 
-/*
- * In first call creates Global Dictionary with id 0
- */
 static std::unordered_map<unsigned long, std::unordered_map<std::string, std::string>> &dictionaries() {
     static auto *_dictionaries = new std::unordered_map<unsigned long, std::unordered_map<std::string, std::string>>();
     assert(_dictionaries != nullptr);
