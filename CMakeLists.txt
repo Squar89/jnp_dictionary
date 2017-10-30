@@ -1,14 +1,12 @@
 cmake_minimum_required(VERSION 3.8)
 project(jnp_dictionary)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -O2 -std=c++17")
 set(CMAKE_C_FLAGS "-Wall -Wextra -O2")
 
 set(CMAKE_CXX_FLAGS_RELEASE -DNDEBUG)
-
-set(CMAKE_VERBOSE_MAKEFILE ON)
 
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE RELEASE)
