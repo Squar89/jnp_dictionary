@@ -1,5 +1,5 @@
 /**
- * \authors Rafał Banaś, Jakub Wróbelski
+ * \authors Rafał Banaś, Jakub Wróblewski
  */
 #include "dictglobal.h"
 #include "dict.h"

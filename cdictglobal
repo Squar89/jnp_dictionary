@@ -1,0 +1,12 @@
+/**
+ * \authors Rafał Banaś, Jakub Wróblewski
+ */
+
+#ifndef JNP_DICTIONARY_CDICTGLOBAL
+#define JNP_DICTIONARY_CDICTGLOBAL
+
+namespace jnp1 {
+    #include <dictglobal.h>
+}
+
+#endif //JNP_DICTIONARY_CDICTGLOBAL
