@@ -5,6 +5,6 @@
 int main() {
 
     unsigned long id1 = dict_new();
-    dict_insert(id1, "key", "value");
+    dict_insert(id1, "key", NULL);
 
 }

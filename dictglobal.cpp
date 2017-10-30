@@ -5,11 +5,11 @@
 #include "dict.h"
 
 unsigned long dict_global() {
-    static auto *global_id = new unsigned long;
+    static unsigned long global_id;
     static bool first_call = true;
     if (first_call) {
         first_call = false;
-        *global_id = dict_new();
+        global_id = dict_new();
     }
-    return *global_id;
+    return global_id;
 }

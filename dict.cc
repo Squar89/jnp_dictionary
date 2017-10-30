@@ -29,7 +29,7 @@ static unsigned long &next_id() {
 }
 
 static bool dict_is_global(unsigned long id) {
-    return id == 0;
+    return id == GLOBAL_ID;
 }
 
 static bool dict_exists(unsigned long id) {
