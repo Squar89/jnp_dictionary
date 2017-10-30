@@ -16,7 +16,10 @@ const bool DEBUG = false;
 
 static const unsigned long GLOBAL_ID = dict_global();
 
-static std::unordered_map<unsigned long, std::unordered_map<std::string, std::string>> &dictionaries() {
+using dictionary_t = std::unordered_map<std::string, std::string>;
+// Zamienić resztę
+
+static std::unordered_map<unsigned long, dictionary_t> &dictionaries() {
     static auto *_dictionaries = new std::unordered_map<unsigned long, std::unordered_map<std::string, std::string>>();
     assert(_dictionaries != nullptr);
     return *_dictionaries;
@@ -36,8 +39,8 @@ static bool dict_exists(unsigned long id) {
     return dictionaries().count(id) > 0;
 }
 
-static const char* string_or_null(const char* str) {
-    return (str == nullptr) ? "NULLPTR" :  str;
+static const char *string_or_null(const char *str) {
+    return (str == nullptr) ? "NULLPTR" : str;
 }
 
 static void dict_new_debug(unsigned long created_id) {
@@ -98,7 +101,7 @@ size_t dict_size(unsigned long id) {
 }
 
 static bool dict_global_insert(unsigned long id, const char *key, const char *value) {
-    if (dict_size(id) < MAX_GLOBAL_DICT_SIZE || dictionaries()[id].count() > 0) {
+    if (dict_size(id) < MAX_GLOBAL_DICT_SIZE || dictionaries()[id].count(key) > 0) {
         dictionaries()[id][std::string(key)] = std::string(value);
         return false;
     } else {
@@ -113,7 +116,8 @@ static void dict_insert_debug(unsigned long id,
                               bool overflow,
                               bool null_pointers) {
     if (DEBUG) {
-        std::cerr << "dict_insert(" << id << ", \"" << string_or_null(key) << "\", \"" << string_or_null(value) << "\")" << std::endl;
+        std::cerr << "dict_insert(" << id << ", \"" << string_or_null(key) << "\", \"" << string_or_null(value) << "\")"
+                  << std::endl;
         if (!exists) {
             std::cerr << "dict_insert: dict " << id << " does not exist" << std::endl;
             return;
@@ -125,8 +129,7 @@ static void dict_insert_debug(unsigned long id,
                 std::cerr << "dict_insert: cannot insert to global dictionary over maximum size";
             } else {
                 std::cerr << "dict_insert: inserted pair (\"" << string_or_null(key) << "\", \""
-                          << string_or_null(value) << "\") into dict " << id
-                          << std::endl;
+                          << string_or_null(value) << "\") into dict " << id << std::endl;
             }
         }
     }
@@ -157,7 +160,8 @@ static void dict_remove_debug(unsigned long id, const char *key, bool exists, bo
             if (contains) {
                 std::cerr << "dict_remove: removed key \"" << string_or_null(key) << "\" from dict " << id << std::endl;
             } else {
-                std::cerr << "dict_remove: dict " << id << " does not contain key \"" << string_or_null(key) << "\"" << std::endl;
+                std::cerr << "dict_remove: dict " << id << " does not contain key \"" << string_or_null(key) << "\""
+                          << std::endl;
             }
         } else {
             std::cerr << "dict_remove:  null pointer" << std::endl;
@@ -226,7 +230,7 @@ static void dict_clear_debug(unsigned long id, bool exists) {
     if (!DEBUG) {
         return;
     }
-    std::cerr << "dict_clear(" << id << ")" <<std::endl;
+    std::cerr << "dict_clear(" << id << ")" << std::endl;
     if (!exists) {
         std::cerr << "dict_clear: dict " << id << " does not exist" << std::endl;
     }
@@ -262,13 +266,14 @@ void dict_copy(unsigned long src_id, unsigned long dst_id) {
     bool dst_exists = dict_exists(dst_id);
 
     if (src_exists && dst_exists) {
-        for (auto & key_value_pair : dictionaries()[src_id]) {
-            if (is_global(dst_id) && (dict_size(dst_id) < MAX_GLOBAL_DICT_SIZE || dictionaries()[id].count() > 0)) {
+        for (auto &key_value_pair : dictionaries()[src_id]) {
+            if (dict_is_global(dst_id) &&
+                (dict_size(dst_id) < MAX_GLOBAL_DICT_SIZE || dictionaries()[dst_id].count(key_value_pair.first) > 0)) {
                 dictionaries()[dst_id][key_value_pair.first] = key_value_pair.second;
             } else {
                 dictionaries()[dst_id][key_value_pair.first] = key_value_pair.second;
             }
-        
+
         }
     }
     dict_copy_debug(src_id, dst_id, src_exists, dst_exists);
