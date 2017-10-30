@@ -1,5 +1,5 @@
 /**
- * \authors Rafał Banaś, Jakub Wróbelski
+ * \authors Rafał Banaś, Jakub Wróblewski
  */
 #include <vector>
 #include <unordered_map>
@@ -257,6 +257,8 @@ void dict_copy(unsigned long src_id, unsigned long dst_id) {
     bool src_exists = dict_exists(src_id);
     bool dst_exists = dict_exists(dst_id);
 
+
+    /* chyba się zbuguje dla słownika globalnego - będziemy mogli przekroczyć jego maksymalny rozmiar */
     if (src_exists && dst_exists) {
         for (auto & key_value_pair : dictionaries()[src_id]) {
             dictionaries()[dst_id][key_value_pair.first] = key_value_pair.second;
