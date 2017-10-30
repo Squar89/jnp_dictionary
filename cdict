@@ -6,7 +6,7 @@
 #define JNP_DICTIONARY_CDICT
 
 namespace jnp1 {
-    #include <dict.h>
+    #include "dict.h"
 }
 
 #endif //JNP_DICTIONARY_CDICT

@@ -98,7 +98,7 @@ size_t dict_size(unsigned long id) {
 }
 
 static bool dict_global_insert(unsigned long id, const char *key, const char *value) {
-    if (dict_size(id) < MAX_GLOBAL_DICT_SIZE) {
+    if (dict_size(id) < MAX_GLOBAL_DICT_SIZE || dictionaries()[id].count() > 0) {
         dictionaries()[id][std::string(key)] = std::string(value);
         return false;
     } else {
@@ -206,7 +206,6 @@ static void dict_find_debug(unsigned long id,
 
 const char *dict_find(unsigned long id, const char *key) {
     bool exists = dict_exists(id);
-    bool is_global = dict_is_global(id);
     bool null_pointer = key == nullptr;
     bool has_key = false;
     bool global_has_key = false;
@@ -262,11 +261,14 @@ void dict_copy(unsigned long src_id, unsigned long dst_id) {
     bool src_exists = dict_exists(src_id);
     bool dst_exists = dict_exists(dst_id);
 
-
-    /* chyba się zbuguje dla słownika globalnego - będziemy mogli przekroczyć jego maksymalny rozmiar */
     if (src_exists && dst_exists) {
         for (auto & key_value_pair : dictionaries()[src_id]) {
-            dictionaries()[dst_id][key_value_pair.first] = key_value_pair.second;
+            if (is_global(dst_id) && (dict_size(dst_id) < MAX_GLOBAL_DICT_SIZE || dictionaries()[id].count() > 0)) {
+                dictionaries()[dst_id][key_value_pair.first] = key_value_pair.second;
+            } else {
+                dictionaries()[dst_id][key_value_pair.first] = key_value_pair.second;
+            }
+        
         }
     }
     dict_copy_debug(src_id, dst_id, src_exists, dst_exists);
