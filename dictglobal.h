@@ -4,9 +4,12 @@
 #ifndef JNP_DICTIONARY_DICTGLOBAL_H
 #define JNP_DICTIONARY_DICTGLOBAL_H
 
-#include <cstddef>
-
+#ifdef __cplusplus
 extern "C" {
+#endif
+    
+    #include <cstddef>
+
     /**
      * Maximum size of global dictionary
      */
@@ -17,6 +20,9 @@ extern "C" {
      * @return global dictionary id
      */
     unsigned long dict_global();
+
+#ifdef __cplusplus
 }
+#endif
 
 #endif //JNP_DICTIONARY_DICTGLOBAL_H

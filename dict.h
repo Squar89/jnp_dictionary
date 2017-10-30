@@ -4,7 +4,9 @@
 #ifndef JNP_DICTIONARY_DICT_H
 #define JNP_DICTIONARY_DICT_H
 
+#ifdef __cplusplus
 extern "C" {
+#endif
     /**
      * Creates new dictionary
      * @return new dictionary id
@@ -60,6 +62,9 @@ extern "C" {
      * @param dst_id
      */
     void dict_copy(unsigned long src_id, unsigned long dst_id);
+    
+#ifdef __cplusplus
 }
+#endif
 
 #endif //JNP_DICTIONARY_DICT_H
