@@ -36,6 +36,10 @@ static bool dict_exists(unsigned long id) {
     return dictionaries().count(id) > 0;
 }
 
+static const char* string_or_null(const char* str) {
+    return (str == nullptr) ? "NULLPTR" :  str;
+}
+
 static void dict_new_debug(unsigned long created_id) {
     if (DEBUG) {
         std::cerr << "dict_new()" << std::endl << "dict_new: dict " << created_id << " created" << std::endl;
@@ -109,7 +113,7 @@ static void dict_insert_debug(unsigned long id,
                               bool overflow,
                               bool null_pointers) {
     if (DEBUG) {
-        std::cerr << "dict_insert(" << id << ", \"" << key << "\", \"" << value << "\")" << std::endl;
+        std::cerr << "dict_insert(" << id << ", \"" << string_or_null(key) << "\", \"" << string_or_null(value) << "\")" << std::endl;
         if (!exists) {
             std::cerr << "dict_insert: dict " << id << " does not exist" << std::endl;
             return;
@@ -120,7 +124,8 @@ static void dict_insert_debug(unsigned long id,
             if (overflow) {
                 std::cerr << "dict_insert: cannot insert to global dictionary over maximum size";
             } else {
-                std::cerr << "dict_insert: inserted pair (\"" << key << "\", \"" << value << "\") into dict " << id
+                std::cerr << "dict_insert: inserted pair (\"" << string_or_null(key) << "\", \""
+                          << string_or_null(value) << "\") into dict " << id
                           << std::endl;
             }
         }
@@ -144,15 +149,15 @@ void dict_insert(unsigned long id, const char *key, const char *value) {
 
 static void dict_remove_debug(unsigned long id, const char *key, bool exists, bool contains, bool null_pointer) {
     if (DEBUG) {
-        std::cerr << "dict_remove(" << id << ", \"" << key << "\")" << std::endl;
+        std::cerr << "dict_remove(" << id << ", \"" << string_or_null(key) << "\")" << std::endl;
         if (!exists) {
             std::cerr << "dict_remove: dict " << id << " does not exist" << std::endl;
         }
         if (!null_pointer) {
             if (contains) {
-                std::cerr << "dict_remove: removed key \"" << key << "\" from dict " << id << std::endl;
+                std::cerr << "dict_remove: removed key \"" << string_or_null(key) << "\" from dict " << id << std::endl;
             } else {
-                std::cerr << "dict_remove: dict " << id << " does not contain key \"" << key << "\"" << std::endl;
+                std::cerr << "dict_remove: dict " << id << " does not contain key \"" << string_or_null(key) << "\"" << std::endl;
             }
         } else {
             std::cerr << "dict_remove:  null pointer" << std::endl;
@@ -177,7 +182,7 @@ static void dict_find_debug(unsigned long id,
                             bool global_has_key,
                             const char *value) {
     if (DEBUG) {
-        std::cerr << "dict_find(" << id << ", \"" << key << "\")" << std::endl;
+        std::cerr << "dict_find(" << id << ", \"" << string_or_null(key) << "\")" << std::endl;
         if (null_pointer) {
             std::cerr << "dict_find: null pointer" << std::endl;
             return;
@@ -187,13 +192,13 @@ static void dict_find_debug(unsigned long id,
             return;
         }
         if (has_key) {
-            std::cerr << "dict_find: found value \"" << value << "\" for key \"" << key << "\" in dict" << id
-                      << std::endl;
+            std::cerr << "dict_find: found value \"" << string_or_null(value) << "\" for key \""
+                      << string_or_null(key) << "\" in dict" << id << std::endl;
             return;
         }
         if (global_has_key) {
-            std::cerr << "dict_find: key \"" << key << "\" not found in dict " << id << ". Value \"" << value
-                      << "\" taken from the global dict" << std::endl;
+            std::cerr << "dict_find: key \"" << string_or_null(key) << "\" not found in dict " << id << ". Value \""
+                      << string_or_null(value) << "\" taken from the global dict" << std::endl;
             return;
         }
     }
