@@ -17,8 +17,6 @@ const bool DEBUG = false;
 static const unsigned long GLOBAL_ID = dict_global();
 
 using dictionary_t = std::unordered_map<std::string, std::string>;
-// Napisać testy
-// Napisać CMake
 
 static std::unordered_map<unsigned long, dictionary_t> &dictionaries() {
     static auto *_dictionaries = new std::unordered_map<unsigned long, dictionary_t>();
