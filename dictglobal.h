@@ -6,10 +6,10 @@
 
 #include <stddef.h>
 
+#ifdef __cplusplus
 namespace jnp1 {
-    #ifdef __cplusplus
     extern "C" {
-    #endif
+#endif
         /**
          * Maximum size of global dictionary
          */
@@ -20,9 +20,9 @@ namespace jnp1 {
          * @return global dictionary id
          */
         unsigned long dict_global();
-    #ifdef __cplusplus
+#ifdef __cplusplus
     }
-    #endif
 }
+#endif
 
 #endif //JNP_DICTIONARY_DICTGLOBAL_H
