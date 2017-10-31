@@ -2,7 +2,7 @@
 #include <cassert>
 #include "dict.h"
 
-using namespace std;
+using namespace jnp1;
 
 int main() {
 
