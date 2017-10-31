@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.5.1)
 project(jnp_dictionary)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -12,7 +12,7 @@ set(CMAKE_C_FLAGS "-Wall -Wextra -O2")
 set(CMAKE_CXX_FLAGS_RELEASE -DNDEBUG)
 
 if (NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE RELEASE)
+    set(CMAKE_BUILD_TYPE DEBUG)
 endif ()
 
 set(TEST1_FILES dict.cc dict.h dictglobal.cc dictglobal.h dict_test1.c)
@@ -23,6 +23,7 @@ set(TEST_FILES tests.cpp dict.cc dict.h dictglobal.cc dictglobal.h)
 add_executable(dict_test1 ${TEST1_FILES})
 add_executable(dict_test2a ${TEST2A_FILES})
 add_executable(dict_test2b ${TEST2B_FILES})
+add_executable(tests ${TEST_FILES})
 
 #g++ -c -Wall -Wextra -O2 -std=c++17 dict.cc -o dict.o
 #g++ -c -Wall -Wextra -O2 -std=c++17 dictglobal.cc -o dictglobal.o

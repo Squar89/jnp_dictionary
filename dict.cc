@@ -72,7 +72,7 @@ static void dict_delete_debug(unsigned long id, bool existed, bool is_global) {
 void dict_delete(unsigned long id) {
     bool is_global = dict_is_global(id);
     bool exists = dict_exists(id);
-    if (is_global && exists) {
+    if (!is_global && exists) {
         dictionaries().erase(id);
     }
     dict_delete_debug(id, exists, is_global);
