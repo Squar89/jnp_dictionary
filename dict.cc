@@ -102,8 +102,17 @@ size_t dict_size(unsigned long id) {
     return size;
 }
 
+static size_t dict_global_size(unsigned long id) {
+    if (dict_exists(id)) {
+        return dictionaries()[id].size();
+    }
+    else {
+        return 0;
+    }
+}
+
 static bool dict_global_insert(unsigned long id, const char *key, const char *value) {
-    if (dict_size(id) < MAX_GLOBAL_DICT_SIZE || dictionaries()[id].count(key) > 0) {
+    if (dict_global_size(id) < MAX_GLOBAL_DICT_SIZE || dictionaries()[id].count(key) > 0) {
         dictionaries()[id][std::string(key)] = std::string(value);
         return false;
     } else {
