@@ -66,6 +66,6 @@ namespace jnp1 {
     #ifdef __cplusplus
     }
     #endif
-{
+}
 
 #endif //JNP_DICTIONARY_DICT_H
