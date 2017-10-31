@@ -86,7 +86,7 @@ namespace {
     }
 
     static bool dict_global_insert(unsigned long id, const char *key, const char *value) {
-        if (dict_global_size(id) < MAX_GLOBAL_DICT_SIZE || dictionaries()[id].count(key) > 0) {
+        if (dict_global_size(id) < jnp1::MAX_GLOBAL_DICT_SIZE || dictionaries()[id].count(key) > 0) {
             dictionaries()[id][std::string(key)] = std::string(value);
             return false;
         } else {
