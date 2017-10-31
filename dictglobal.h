@@ -9,18 +9,18 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+    namespace jnp1 {
+        /**
+         * Maximum size of global dictionary
+         */
+        extern const size_t MAX_GLOBAL_DICT_SIZE;
 
-    /**
-     * Maximum size of global dictionary
-     */
-    extern const size_t MAX_GLOBAL_DICT_SIZE;
-
-    /**
-     * Returns id of global dictionary
-     * @return global dictionary id
-     */
-    unsigned long dict_global();
-
+        /**
+         * Returns id of global dictionary
+         * @return global dictionary id
+         */
+        unsigned long dict_global();
+    }
 #ifdef __cplusplus
 }
 #endif
