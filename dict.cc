@@ -9,48 +9,52 @@
 #include "dictglobal.h"
 
 namespace {
-    #ifndef DNDEBUG
+#ifndef DNDEBUG
     const bool DEBUG = true;
-    #else
+#else
     const bool DEBUG = false;
-    #endif
+#endif
 
     using dictionary_t = std::unordered_map<std::string, std::string>;
 
-    static const unsigned long GLOBAL_ID = jnp1::dict_global();
+    const unsigned long GLOBAL_ID = jnp1::dict_global();
 
-    static std::unordered_map<unsigned long, dictionary_t> &dictionaries() {
+    std::unordered_map<unsigned long, dictionary_t> &dictionaries() {
         static auto *_dictionaries = new std::unordered_map<unsigned long, dictionary_t>();
         assert(_dictionaries != nullptr);
         return *_dictionaries;
     };
 
-    static unsigned long &next_id() {
+    unsigned long &next_id() {
         static auto *id = new unsigned long(0);
         assert(id != nullptr);
         return *id;
     }
 
-    static bool dict_is_global(unsigned long id) {
+    bool dict_is_global(unsigned long id) {
         return id == GLOBAL_ID;
     }
 
-    static bool dict_exists(unsigned long id) {
+    bool dict_exists(unsigned long id) {
         return dictionaries().count(id) > 0;
     }
 
-    static const char *string_or_null(const char *str) {
+    bool dict_has_key(unsigned long id, const char *key) {
+        return dictionaries()[id].count(key) > 0;
+    }
+
+    const char *string_or_null(const char *str) {
         return (str == nullptr) ? "NULLPTR" : str;
     }
 
-    static void dict_new_debug(unsigned long created_id) {
+    void dict_new_debug(unsigned long created_id) {
         if (!DEBUG) {
             return;
         }
         std::cerr << "dict_new()" << std::endl << "dict_new: dict " << created_id << " created" << std::endl;
     }
 
-    static void dict_delete_debug(unsigned long id, bool existed, bool is_global) {
+    void dict_delete_debug(unsigned long id, bool existed, bool is_global) {
         if (!DEBUG) {
             return;
         }
@@ -64,7 +68,7 @@ namespace {
         }
     }
 
-    static void dict_size_debug(bool exists, size_t size, unsigned long id) {
+    void dict_size_debug(bool exists, size_t size, unsigned long id) {
         if (!DEBUG) {
             return;
         }
@@ -76,17 +80,16 @@ namespace {
         }
     }
 
-    static size_t dict_global_size(unsigned long id) {
+    size_t dict_global_size(unsigned long id) {
         if (dict_exists(id)) {
             return dictionaries()[id].size();
-        }
-        else {
+        } else {
             return 0;
         }
     }
 
-    static bool dict_global_insert(unsigned long id, const char *key, const char *value) {
-        if (dict_global_size(id) < jnp1::MAX_GLOBAL_DICT_SIZE || dictionaries()[id].count(key) > 0) {
+    bool dict_global_insert(unsigned long id, const char *key, const char *value) {
+        if (dict_global_size(id) < jnp1::MAX_GLOBAL_DICT_SIZE || dict_has_key(id, key)) {
             dictionaries()[id][std::string(key)] = std::string(value);
             return false;
         } else {
@@ -94,12 +97,12 @@ namespace {
         }
     }
 
-    static void dict_insert_debug(unsigned long id,
-                                  const char *key,
-                                  const char *value,
-                                  bool exists,
-                                  bool overflow,
-                                  bool null_pointers) {
+    void dict_insert_debug(unsigned long id,
+                           const char *key,
+                           const char *value,
+                           bool exists,
+                           bool overflow,
+                           bool null_pointers) {
         if (!DEBUG) {
             return;
         }
@@ -121,7 +124,7 @@ namespace {
         }
     }
 
-    static void dict_remove_debug(unsigned long id, const char *key, bool exists, bool contains, bool null_pointer) {
+    void dict_remove_debug(unsigned long id, const char *key, bool exists, bool contains, bool null_pointer) {
         if (!DEBUG) {
             return;
         }
@@ -141,12 +144,12 @@ namespace {
         }
     }
 
-    static void dict_find_debug(unsigned long id,
-                                const char *key,
-                                bool null_pointer,
-                                bool has_key,
-                                bool global_has_key,
-                                const char *value) {
+    void dict_find_debug(unsigned long id,
+                         const char *key,
+                         bool null_pointer,
+                         bool has_key,
+                         bool global_has_key,
+                         const char *value) {
         if (!DEBUG) {
             return;
         }
@@ -171,7 +174,7 @@ namespace {
         }
     }
 
-    static void dict_clear_debug(unsigned long id, bool exists) {
+    void dict_clear_debug(unsigned long id, bool exists) {
         if (!DEBUG) {
             return;
         }
@@ -182,7 +185,7 @@ namespace {
         std::cerr << "dict_clear: cleared dict " << id << std::endl;
     }
 
-    static void dict_copy_debug(unsigned long src_id, unsigned long dst_id, bool src_exists, bool dst_exists) {
+    void dict_copy_debug(unsigned long src_id, unsigned long dst_id, bool src_exists, bool dst_exists) {
         if (!DEBUG) {
             return;
         }
@@ -258,11 +261,12 @@ namespace jnp1 {
         bool has_key = false;
         bool global_has_key = false;
         const char *value = nullptr;
-        global_has_key = dictionaries()[GLOBAL_ID].count(key) > 0;
+
         if (!null_pointer) {
+            global_has_key = dict_has_key(GLOBAL_ID, key);
             value = (global_has_key) ? dictionaries()[GLOBAL_ID][key].c_str() : value;
             if (exists) {
-                has_key = dictionaries()[id].count(key) > 0;
+                has_key = dict_has_key(id, key);
                 value = (has_key) ? dictionaries()[id][key].c_str() : value;
             }
         }
@@ -284,9 +288,10 @@ namespace jnp1 {
 
         if (src_exists && dst_exists) {
             for (auto &key_value_pair : dictionaries()[src_id]) {
-                if (dict_is_global(dst_id) &&
-                    (dict_size(dst_id) < MAX_GLOBAL_DICT_SIZE || dictionaries()[dst_id].count(key_value_pair.first) > 0)) {
-                    dictionaries()[dst_id][key_value_pair.first] = key_value_pair.second;
+                if (dict_is_global(dst_id)) {
+                    if (dict_size(dst_id) < MAX_GLOBAL_DICT_SIZE || dict_has_key(dst_id, key_value_pair.first.c_str())) {
+                        dictionaries()[dst_id][key_value_pair.first] = key_value_pair.second;
+                    }
                 } else {
                     dictionaries()[dst_id][key_value_pair.first] = key_value_pair.second;
                 }
