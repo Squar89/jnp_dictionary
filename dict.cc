@@ -249,7 +249,7 @@ namespace jnp1 {
         bool exists = dict_exists(id);
         bool contains = false;
         bool null_pointer = key == nullptr;
-        if (exists) {
+        if (exists && !null_pointer) {
             contains = dictionaries()[id].erase(std::string(key)) > 0;
         }
         dict_remove_debug(id, key, exists, contains, null_pointer);
