@@ -3,8 +3,6 @@ project(jnp_dictionary)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-#set(CMAKE_CXX_STANDARD 17)
-
 set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
 

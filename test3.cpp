@@ -21,6 +21,7 @@ int main() {
     assert(id0 == 0);
 
     /* dict_new i dict_delete (ostatnie mogą też sprawdzać inne funkcje) */
+    std::cout << "1. TESTING dict_new AND dict_delete" << std::endl << std::endl;
     id1 = jnp1::dict_new();
     assert(id1 == 1);
 
@@ -50,9 +51,12 @@ int main() {
 
     jnp1::dict_delete(id1);
     jnp1::dict_delete(id2);
+
+    std::cout << "1. DONE" << std::endl << std::endl;
     /* */
 
     /* dict_size, dict_insert i dict_remove */
+    std::cout << "2. TESTING dict_size, dict_insert AND dict_remove" << std::endl << std::endl;
     assert(jnp1::dict_size(id1) == 0);
     id1 = jnp1::dict_new();
     assert(jnp1::dict_size(id1) == 0);
@@ -73,7 +77,7 @@ int main() {
     jnp1::dict_remove(id1, "key3");
     assert(jnp1::dict_size(id1) == 1);
 
-    assert(jnp1::dict_size(10) == 0);
+    assert(jnp1::dict_size(100) == 0);
 
     id2 = jnp1::dict_new();
     assert(jnp1::dict_size(id2) == 0);
@@ -107,8 +111,9 @@ int main() {
 
     jnp1::dict_insert(jnp1::dict_global(), "global_key2", "global_value2");
     assert(jnp1::dict_size(id0) == 1);
-    jnp1::dict_remove(10, "global_key2");
-    assert(jnp1::dict_size(jnp1::dict_global()) == 1);
+    jnp1::dict_remove(100, "global_key2");
+    jnp1::dict_remove(jnp1::dict_global(), "global_key2");
+    assert(jnp1::dict_size(jnp1::dict_global()) == 0);
 
     id4 = jnp1::dict_new();
     assert(jnp1::dict_size(id4) == 0);
@@ -126,13 +131,11 @@ int main() {
     jnp1::dict_insert(jnp1::dict_global(), "global_key", "global_value");
     assert(jnp1::dict_size(jnp1::dict_global()) == 1);
     for (int i = 1; i < 42; i++) {
-        char* key = "key";
-        char* value = "value";
-        char* integer_string = NULL;
-        sprintf(integer_string, "%d", i);
-        strcat(key, integer_string);
-        strcat(value, integer_string);
-        jnp1::dict_insert(jnp1::dict_global(), key, value);
+        std::string key = "key";
+        std::string value = "value";
+        key += std::to_string(i);
+        value += std::to_string(i);
+        jnp1::dict_insert(jnp1::dict_global(), key.c_str(), value.c_str());
     }
     assert(jnp1::dict_size(jnp1::dict_global()) == 42);
 
@@ -151,9 +154,12 @@ int main() {
     jnp1::dict_delete(id2);
     jnp1::dict_delete(id3);
     jnp1::dict_delete(id4);
+
+    std::cout << "2. DONE" << std::endl << std::endl;
     /* */
 
     /* dict_find */
+    std::cout << "3. TESTING dict_find" << std::endl << std::endl;
     id1 = jnp1::dict_new();
     jnp1::dict_insert(id1, "key0", "local_value");
     jnp1::dict_insert(id1, "key", "value");
@@ -180,9 +186,12 @@ int main() {
     assert(jnp1::dict_find(id0, "some_key") == NULL);
 
     jnp1::dict_delete(id1);
+
+    std::cout << "3. DONE" << std::endl << std::endl;
     /* */
 
     /* dict_clear */
+    std::cout << "4. TESTING dict_clear" << std::endl << std::endl;
     id1 = jnp1::dict_new();
     jnp1::dict_insert(id1, "key1", "value1");
     jnp1::dict_insert(id1, "key2", "value2");
@@ -194,9 +203,12 @@ int main() {
     assert(jnp1::dict_size(id0) == 0);
 
     jnp1::dict_delete(id1);
+
+    std::cout << "4. DONE" << std::endl << std::endl;
     /* */
 
     /* dict_copy */
+    std::cout << "5. TESTING dict_copy" << std::endl << std::endl;
     id1 = jnp1::dict_new();
     jnp1::dict_insert(id1, "key1", "value1");
     assert(jnp1::dict_size(id1) == 1);
@@ -254,6 +266,16 @@ int main() {
     jnp1::dict_copy(id1, id1);
     assert(jnp1::dict_size(id1) == 3);
 
+    assert(jnp1::dict_size(jnp1::dict_global()) == 0);
+    jnp1::dict_insert(jnp1::dict_global(), "global_key", "global_value");
+    assert(jnp1::dict_size(jnp1::dict_global()) == 1);
+    for (int i = 1; i < 42; i++) {
+        std::string key = "key";
+        std::string value = "value";
+        key += std::to_string(i);
+        value += std::to_string(i);
+        jnp1::dict_insert(jnp1::dict_global(), key.c_str(), value.c_str());
+    }
     assert(jnp1::dict_size(jnp1::dict_global()) == 42);
     jnp1::dict_remove(id0, "key2");
     assert(jnp1::dict_find(id0, "key2") == NULL);
@@ -282,5 +304,9 @@ int main() {
     jnp1::dict_delete(id1);
     jnp1::dict_delete(id2);
     jnp1::dict_delete(id3);
+
+    std::cout << "5. DONE" << std::endl << std::endl;
     /* */
+
+    std::cout << "DONE TESTING" << std::endl;
 }
