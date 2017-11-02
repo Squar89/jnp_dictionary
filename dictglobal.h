@@ -4,12 +4,12 @@
 #ifndef JNP_DICTIONARY_DICTGLOBAL_H
 #define JNP_DICTIONARY_DICTGLOBAL_H
 
-#include <stddef.h>
-
 #ifdef __cplusplus
 #include <iostream>
 namespace jnp1 {
     extern "C" {
+#else
+#include <stddef.h>
 #endif
         /**
          * Maximum size of global dictionary

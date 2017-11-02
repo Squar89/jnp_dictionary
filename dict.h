@@ -8,6 +8,8 @@
 #include <iostream>
 namespace jnp1 {
     extern "C" {
+#else
+#include <stddef.h>
 #endif
         /**
          * Creates new dictionary
