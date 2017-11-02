@@ -3,6 +3,8 @@ project(jnp_dictionary)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
+#set(CMAKE_CXX_STANDARD 17)
+
 set(CMAKE_C_COMPILER gcc)
 set(CMAKE_CXX_COMPILER g++)
 
@@ -19,11 +21,13 @@ set(TEST1_FILES dict.cc dict.h dictglobal.cc dictglobal.h dict_test1.c)
 set(TEST2A_FILES dict.cc dict.h dictglobal.cc dictglobal.h dict_test2a.cc)
 set(TEST2B_FILES dict.cc dict.h dictglobal.cc dictglobal.h dict_test2b.cc)
 set(TEST_FILES tests.cpp dict.cc dict.h dictglobal.cc dictglobal.h)
+set(TEST3_FILES test3.cpp dict.cc dict.h dictglobal.cc dictglobal.h cdict cdictglobal)
 
 add_executable(dict_test1 ${TEST1_FILES})
 add_executable(dict_test2a ${TEST2A_FILES})
 add_executable(dict_test2b ${TEST2B_FILES})
 add_executable(tests ${TEST_FILES})
+add_executable(test3 ${TEST3_FILES})
 
 #g++ -c -Wall -Wextra -O2 -std=c++17 dict.cc -o dict.o
 #g++ -c -Wall -Wextra -O2 -std=c++17 dictglobal.cc -o dictglobal.o
