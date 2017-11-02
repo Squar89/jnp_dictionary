@@ -9,7 +9,7 @@
 #include "dictglobal.h"
 
 namespace {
-#ifndef DNDEBUG
+#ifndef NDEBUG
     const bool DEBUG = true;
 #else
     const bool DEBUG = false;
@@ -181,6 +181,7 @@ namespace {
         std::cerr << "dict_clear(" << id << ")" << std::endl;
         if (!exists) {
             std::cerr << "dict_clear: dict " << id << " does not exist" << std::endl;
+            return;
         }
         std::cerr << "dict_clear: cleared dict " << id << std::endl;
     }
