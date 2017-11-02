@@ -5,6 +5,7 @@
 #define JNP_DICTIONARY_DICT_H
 
 #ifdef __cplusplus
+#include <iostream>
 namespace jnp1 {
     extern "C" {
 #endif

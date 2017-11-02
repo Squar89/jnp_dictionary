@@ -1,7 +1,6 @@
 /**
  * \authors Rafał Banaś, Jakub Wróblewski
  */
-#include <vector>
 #include <unordered_map>
 #include <iostream>
 #include <cassert>
@@ -290,7 +289,8 @@ namespace jnp1 {
         if (src_exists && dst_exists) {
             for (auto &key_value_pair : dictionaries()[src_id]) {
                 if (dict_is_global(dst_id)) {
-                    if (dict_size(dst_id) < MAX_GLOBAL_DICT_SIZE || dict_has_key(dst_id, key_value_pair.first.c_str())) {
+                    if (dict_size(dst_id) < MAX_GLOBAL_DICT_SIZE ||
+                        dict_has_key(dst_id, key_value_pair.first.c_str())) {
                         dictionaries()[dst_id][key_value_pair.first] = key_value_pair.second;
                     }
                 } else {
